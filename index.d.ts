@@ -4,8 +4,8 @@
 
 // inspired by https://stackoverflow.com/a/43382807
 
-declare module "memoizerific" {
-    export = memoizerific;
+declare module 'memoizerific' {
+  export = memoizerific;
 }
 
 type memoize = <R, T extends (...args: any[]) => R>(fn: T) => T;
