@@ -1,4 +1,4 @@
-var Memoizerific = require('../src/memoizerific');
+import Memoizerific  from '../src/memoizerific';
 
 describe("complex args", () => {
 	var memoizedFn,
@@ -13,9 +13,8 @@ describe("complex args", () => {
 		memoizedFn(arg1, arg2, arg3);
 	});
 
-	it("should be map or similar", () => {
-		console.log(process.env.FORCE_SIMILAR_INSTEAD_OF_MAP === 'true' ? 'SIMILAR() to MAP()' : 'MAP()');
-		expect(memoizedFn.cache instanceof Map).toEqual(process.env.FORCE_SIMILAR_INSTEAD_OF_MAP !== 'true');
+	it("should be a map", () => {
+		expect(memoizedFn.cache instanceof Map).toEqual(true);
 	});
 
 	it("should not be memoized", () => {

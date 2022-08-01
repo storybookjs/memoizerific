@@ -1,4 +1,4 @@
-var Memoizerific = require('../src/memoizerific');
+import Memoizerific  from '../src/memoizerific';
 
 describe("no args", () => {
 	var memoizedFn,
@@ -14,7 +14,9 @@ describe("no args", () => {
 		memoizedFn();
 	});
 
-	it("should be map or similar", () => { expect(memoizedFn.cache instanceof Map).toEqual(process.env.FORCE_SIMILAR_INSTEAD_OF_MAP !== 'true'); });
+	it("should be a map", () => {
+		expect(memoizedFn.cache instanceof Map).toEqual(true);
+	});
 
 	it("should be memoized", () => {
 		res = memoizedFn();

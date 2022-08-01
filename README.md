@@ -3,7 +3,7 @@
 
 Fast (see benchmarks), small (1k min/gzip), efficient, JavaScript memoization lib to memoize JS functions.
 
-Uses JavaScript's [Map()](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Map) object for instant lookups, or a [performant polyfill](https://github.com/thinkloop/map-or-similar) if Map is not available - does not do expensive serialization or string manipulation.
+Uses JavaScript's [Map()](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Map) object for instant lookups - does not do expensive serialization or string manipulation.
 
 Supports multiple complex arguments.
 Includes least-recently-used (LRU) caching to maintain only the most recent specified number of results.
@@ -19,7 +19,7 @@ and the push to calculate all derived data on the fly instead of maintaining it 
 NPM:
 
 ```
-npm install memoizerific --save
+npm install @storybook/memoizerific --save
 ```
 
 Or use one of the compiled distributions compatible in any environment (UMD):
