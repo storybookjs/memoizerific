@@ -1,7 +1,5 @@
-var MapOrSimilar = require('map-or-similar');
-
-module.exports = function (limit) {
-	var cache = new MapOrSimilar(process.env.FORCE_SIMILAR_INSTEAD_OF_MAP === 'true'),
+export default function (limit) {
+	var cache = new Map(),
 		lru = [];
 
 	return function (fn) {
@@ -35,7 +33,7 @@ module.exports = function (limit) {
 				isMemoized = false;
 
 				// make maps until last value
-				newMap = new MapOrSimilar(process.env.FORCE_SIMILAR_INSTEAD_OF_MAP === 'true');
+				newMap = new Map();
 				currentCache.set(arguments[i], newMap);
 				currentCache = newMap;
 			}

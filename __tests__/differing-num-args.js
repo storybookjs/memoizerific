@@ -1,4 +1,4 @@
-var Memoizerific = require('../src/memoizerific');
+import Memoizerific  from '../src/memoizerific';
 
 describe("different number of args between calls", () => {
 	var memoizedFn,
