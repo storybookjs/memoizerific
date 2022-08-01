@@ -1,4 +1,5 @@
 # Memoizerific.js
+
 [![Build Status](https://travis-ci.org/thinkloop/memoizerific.svg?branch=master)](https://travis-ci.org/thinkloop/memoizerific)
 
 Fast (see benchmarks), small (1k min/gzip), efficient, JavaScript memoization lib to memoize JS functions.
@@ -16,6 +17,7 @@ This is especially useful with the rise of [redux] (https://github.com/rackt/red
 and the push to calculate all derived data on the fly instead of maintaining it in state.
 
 ## Install
+
 NPM:
 
 ```
@@ -28,14 +30,14 @@ Or use one of the compiled distributions compatible in any environment (UMD):
 - [memoizerific.min.js](https://raw.githubusercontent.com/thinkloop/memoizerific/master/memoizerific.min.js) (minified)
 - [memoizerific.min.gzip.js](https://github.com/thinkloop/memoizerific/raw/master/memoizerific.min.gzip.js) (minified + gzipped)
 
-
 ## Quick Start
+
 ```javascript
 const memoizerific = require('memoizerific');
 
 // memoize the 50 most recent argument combinations of our function
-const memoized = memoizerific(50)(function(arg1, arg2, arg3) {
-    // many long expensive calls here
+const memoized = memoizerific(50)(function (arg1, arg2, arg3) {
+  // many long expensive calls here
 });
 
 memoized(1, 2, 3); // that took long to process
@@ -46,17 +48,18 @@ memoized(2, 3, 4); // this one was cheap!
 ```
 
 Or with complex arguments:
+
 ```javascript
-const 
-    complexArg1 = { a: { b: { c: 99 }}}, // hairy nested object
-    complexArg2 = [{ z: 1}, { q: [{ x: 3 }]}], // funky objects within arrays within arrays
-    complexArg3 = new Set(); // weird set object, anything goes
+const complexArg1 = { a: { b: { c: 99 } } }, // hairy nested object
+  complexArg2 = [{ z: 1 }, { q: [{ x: 3 }] }], // funky objects within arrays within arrays
+  complexArg3 = new Set(); // weird set object, anything goes
 
 memoized(complexArg1, complexArg2, complexArg3); // slow
 memoized(complexArg1, complexArg2, complexArg3); // instant!
 ```
 
 ## Arguments
+
 There are two required arguments:
 
 `limit (required):` the max number of items to cache before the least recently used items are removed.
@@ -73,13 +76,13 @@ Examples:
 
 ```javascript
 // memoize only the last argument combination
-memoizerific(1)(function(arg1, arg2){});
+memoizerific(1)(function (arg1, arg2) {});
 
 // memoize the last 10,000 unique argument combinations
-memoizerific(10000)(function(arg1, arg2){}); 
+memoizerific(10000)(function (arg1, arg2) {});
 
 // memoize infinity results (not recommended)
-memoizerific(0)(function(arg1){}); 
+memoizerific(0)(function (arg1) {});
 ```
 
 The cache works using LRU logic, purging the least recently used results when the limit is reached.
@@ -87,7 +90,7 @@ For example:
 
 ```javascript
 // memoize 1 result
-const myMemoized = memoizerific(1)(function(arg1) {});
+const myMemoized = memoizerific(1)(function (arg1) {});
 
 myMemoized('a'); // function runs, result is cached
 myMemoized('a'); // cached result is returned
@@ -97,17 +100,17 @@ myMemoized('a'); // function runs again
 ```
 
 ## Equality
+
 Arguments are compared using strict equality, while taking into account small edge cases like NaN !== NaN (NaN is a valid argument type).
 A complex object will only trigger a cache hit if it refers to the exact same object in memory,
 not just another object that has similar properties.
 For example, the following code will not produce a cache hit even though the objects look the same:
 
 ```javascript
-const myMemoized = memoizerific(1)(function(arg1) {});
+const myMemoized = memoizerific(1)(function (arg1) {});
 
 myMemoized({ a: true });
 myMemoized({ a: true }); // not cached, the two objects are different instances even though they look the same
-
 ```
 
 This is because a new object is being created on each invocation, rather than the same object being passed in.
@@ -119,6 +122,7 @@ If that function were memoized, it would never hit the cache because the options
 To get around this you can:
 
 #### Store Arguments Separately
+
 Store complex arguments separately for use later on:
 
 ```javascript
@@ -134,12 +138,13 @@ do(opts); // cache hit
 
 ```
 
-#### Destructure 
+#### Destructure
+
 Destructure complex objects into simple properties then use the simple properties inside the memoized function to re-create the complex object:
 
 ```javascript
 const callDo = memoizerific(1)(function(prop1, prop2) {
-  return do({prop1, prop2}); 
+  return do({prop1, prop2});
 });
 
 callDo(1000, 'abc');
@@ -147,7 +152,8 @@ callDo(1000, 'abc'); // cache hit
 ```
 
 ## Internals
-Meta properties are available for introspection for debugging and informational purposes. 
+
+Meta properties are available for introspection for debugging and informational purposes.
 They should not be manipulated directly, only read.
 The following properties are available:
 
@@ -171,6 +177,7 @@ console.log(myMemoized.wasMemoized); // true
 ```
 
 ## Principles
+
 There are many memoization libs available for JavaScript. Some of them have specialized use-cases, such as memoizing file-system access or server async requests.
 While others, such as this one, tackle the more general case of memoizing standard synchronous functions.
 Some criteria to look for when shopping for a lib like this:
@@ -186,10 +193,10 @@ Two libs with traction that meet the criteria are:
 
 :heavy_check_mark: [LRU-Memoize](https://github.com/erikras/lru-memoize) (@erikras)
 
-
 ## Benchmarks
 
 Benchmarks were performed with complex data. Example arguments look like:
+
 ```javascript
 myMemoized(
     { a: 1, b: [{ c: 2, d: { e: 3 }}] }, // 1st argument
@@ -199,28 +206,30 @@ myMemoized(
 );
 
 ```
+
 Tests involved calling the memoized functions thousands times using varying numbers of arguments (between 2-8) and with varying amounts of data repetition (more repetion means more cache hits and vice versa).
 
 ##### Measurements
+
 Following are measurements from 5000 iterations of each combination of number of arguments and variance on firefox 44:
 
 | Cache Size | Num Args | Approx. Cache Hits (variance) | LRU-Memoize | Memoizee | Memoizerific | % Faster |
 | :--------: | :------: | :---------------------------: | :---------: | :------: | :----------: | :------: |
-| 10         | 2        | 99%                           | 19ms        | 31ms     | **10ms**     | _90%_    |
-| 10         | 2        | 62%                           | 212ms       | 319ms    | **172ms**    | _23%_    |
-| 10         | 2        | 7%                            | 579ms       | 617ms    | **518ms**    | _12%_    |
+|     10     |    2     |              99%              |    19ms     |   31ms   |   **10ms**   |  _90%_   |
+|     10     |    2     |              62%              |    212ms    |  319ms   |  **172ms**   |  _23%_   |
+|     10     |    2     |              7%               |    579ms    |  617ms   |  **518ms**   |  _12%_   |
 |            |          |                               |             |          |              |          |
-| 100        | 2        | 99%                           | 137ms       | 37ms     | **20ms**     | _85%_    |
-| 100        | 2        | 69%                           | 696ms       | 245ms    | **161ms**    | _52%_    |
-| 100        | 2        | 10%                           | 1,057ms     | 649ms    | **527ms**    | _23%_    |
+|    100     |    2     |              99%              |    137ms    |   37ms   |   **20ms**   |  _85%_   |
+|    100     |    2     |              69%              |    696ms    |  245ms   |  **161ms**   |  _52%_   |
+|    100     |    2     |              10%              |   1,057ms   |  649ms   |  **527ms**   |  _23%_   |
 |            |          |                               |             |          |              |          |
-| 500        | 4        | 95%                           | 476ms       | 67ms     | **62ms**     | _8%_     |
-| 500        | 4        | 36%                           | 2,642ms     | 703ms    | **594ms**    | _18%_    |
-| 500        | 4        | 11%                           | 3,619ms     | 880ms    | **725ms**    | _21%_    |
+|    500     |    4     |              95%              |    476ms    |   67ms   |   **62ms**   |   _8%_   |
+|    500     |    4     |              36%              |   2,642ms   |  703ms   |  **594ms**   |  _18%_   |
+|    500     |    4     |              11%              |   3,619ms   |  880ms   |  **725ms**   |  _21%_   |
 |            |          |                               |             |          |              |          |
-| 1000       | 8        | 95%                           | 1,009ms     | **52ms** | 65ms         | _25%_    |
-| 1000       | 8        | 14%                           | 10,477ms    | 659ms    | **635ms**    | _4%_     |
-| 1000       | 8        | 1%                            | 6,943ms     | 1,501ms  | **1,466ms**  | _2%_     |
+|    1000    |    8     |              95%              |   1,009ms   | **52ms** |     65ms     |  _25%_   |
+|    1000    |    8     |              14%              |  10,477ms   |  659ms   |  **635ms**   |   _4%_   |
+|    1000    |    8     |              1%               |   6,943ms   | 1,501ms  | **1,466ms**  |   _2%_   |
 
 ```
 Cache Size                    : The maximum number of results to cache.
@@ -235,7 +244,7 @@ LRU-Memoize performed well with few arguments and lots of cache hits, but degrad
 
 Memoizee performed reliably with good speed.
 
-Memoizerific was fastest by about 30% with predictable decreases in performance as tests became more challenging. 
+Memoizerific was fastest by about 30% with predictable decreases in performance as tests became more challenging.
 
 ## License
 
@@ -247,6 +256,7 @@ Released under an MIT license.
 - [Multi Key Cache](https://github.com/thinkloop/multi-key-cache): A JavaScript (JS) cache that can have multiple complex values as keys.
 
 ## Other
+
 - [todo-app](https://github.com/thinkloop/todo-app/): Example todo app of extreme decoupling of react, redux and selectors
 - [link-react](https://github.com/thinkloop/link-react/): A generalized link <a> component that allows client-side navigation while taking into account exceptions
 
