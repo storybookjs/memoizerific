@@ -1,24 +1,18 @@
-import Memoizerific from '../src/memoizerific';
+import memoize, { Memoizerific } from '../src/memoizerific';
 
 describe('surpassed limit', () => {
-  var memoizedFn,
-    arg1 = { a: { b: 3 }, num: 3 },
-    arg2 = { c: { d: 3 }, num: 7 },
-    arg3 = [
-      { f: { g: 3 }, num: 11 },
-      { h: { i: 3 }, num: 4 },
-      { j: { k: 3 }, num: 6 },
-    ];
+  let memoizedFn: Memoizerific<any>;
+  const arg1 = { a: { b: 3 }, num: 3 };
+  const arg2 = { c: { d: 3 }, num: 7 };
+  const arg3 = [
+    { f: { g: 3 }, num: 11 },
+    { h: { i: 3 }, num: 4 },
+    { j: { k: 3 }, num: 6 },
+  ];
 
-  beforeEach(function () {
-    memoizedFn = Memoizerific(2)(function (arg1, arg2, arg3) {
-      return arg1.num * arg2.num;
-    });
+  beforeEach(() => {
+    memoizedFn = memoize(2)((a: any, b: any, c: any) => a.num * b.num);
     memoizedFn(arg1, arg2, arg3);
-  });
-
-  it('should be a map', () => {
-    expect(memoizedFn.cache instanceof Map).toEqual(true);
   });
 
   it('should replace original memoized', () => {

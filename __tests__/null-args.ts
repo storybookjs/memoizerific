@@ -1,20 +1,14 @@
-import Memoizerific from '../src/memoizerific';
+import memoize, { Memoizerific } from '../src/memoizerific';
 
 describe('null args', () => {
-  var memoizedFn,
-    arg1 = null,
-    arg2 = undefined,
-    arg3 = NaN; // important to test since NaN does not equal NaN
+  let memoizedFn: Memoizerific<any>;
+  const arg1: any = null;
+  const arg2: any = undefined;
+  const arg3 = NaN; // important to test since NaN does not equal NaN
 
-  beforeEach(function () {
-    memoizedFn = Memoizerific(50)(function (arg1, arg2, arg3) {
-      return '';
-    });
+  beforeEach(() => {
+    memoizedFn = memoize(50)((a: any, b: any, c: any) => '');
     memoizedFn(arg1, arg2, arg3);
-  });
-
-  it('should be a map', () => {
-    expect(memoizedFn.cache instanceof Map).toEqual(true);
   });
 
   it('should not be memoized', () => {

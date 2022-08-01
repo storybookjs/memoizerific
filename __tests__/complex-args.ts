@@ -1,35 +1,31 @@
-import Memoizerific from '../src/memoizerific';
+import memoize, { Memoizerific } from '../src/memoizerific';
 
-describe('complex args', () => {
-  var memoizedFn,
-    arg1 = { a: { b: 3 }, num: 3 },
-    arg2 = { c: { d: 3 }, num: 7 },
-    arg3 = [
-      { f: { g: 3 }, num: 11 },
-      { h: { i: 3 }, num: 4 },
-      { j: { k: 3 }, num: 6 },
-    ];
+describe('complexArgs', () => {
+  const arg1 = { a: { b: 3 }, num: 3 };
+  const arg2 = { c: { d: 3 }, num: 7 };
+  const arg3 = [
+    { f: { g: 3 }, num: 11 },
+    { h: { i: 3 }, num: 4 },
+    { j: { k: 3 }, num: 6 },
+  ];
 
-  beforeEach(function () {
-    memoizedFn = Memoizerific(50)(function (arg1, arg2, arg3) {
-      return arg1.num * arg2.num;
-    });
+  let memoizedFn: Memoizerific<(...args: any[]) => any>;
+
+  beforeEach(() => {
+    memoizedFn = memoize(50)((a: any, b: any, c: any) => a.num * b.num);
     memoizedFn(arg1, arg2, arg3);
   });
 
-  it('should be a map', () => {
+  it('should be map', () => {
     expect(memoizedFn.cache instanceof Map).toEqual(true);
   });
 
   it('should not be memoized', () => {
-    memoizedFn = Memoizerific(50)(function (arg1) {
-      return arg1;
-    });
+    const a1 = { a: 1 };
+    memoizedFn = memoize(50)((input: any) => input);
 
     memoizedFn(arg1);
     expect(memoizedFn.wasMemoized).toEqual(false);
-
-    var a1 = { a: 1 };
 
     memoizedFn(a1);
     expect(memoizedFn.wasMemoized).toEqual(false);

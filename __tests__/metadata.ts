@@ -1,12 +1,10 @@
-import Memoizerific from '../src/memoizerific';
+import memoize, { Memoizerific } from '../src/memoizerific';
 
 describe('wasMemoized', () => {
-  var memoizedFn;
+  let memoizedFn: Memoizerific<(a: number, b: number, c: number) => number>;
 
-  beforeEach(function () {
-    memoizedFn = Memoizerific(50)(function (arg1, arg2, arg3) {
-      return arg1.num * arg2.num;
-    });
+  beforeEach(() => {
+    memoizedFn = memoize(50)((arg1, arg2, arg3) => arg1 + arg2 + arg3);
   });
 
   it('should be false before any invocations', () => {
@@ -33,12 +31,10 @@ describe('wasMemoized', () => {
 });
 
 describe('limit', () => {
-  var memoizedFn;
+  let memoizedFn: Memoizerific<any>;
 
-  beforeEach(function () {
-    memoizedFn = Memoizerific(43)(function (arg1, arg2, arg3) {
-      return arg1.num * arg2.num;
-    });
+  beforeEach(() => {
+    memoizedFn = memoize(43)((arg1: any, arg2: any, arg3: any) => arg1.num * arg2.num);
   });
 
   it('should be correct after no invocations', () => {
