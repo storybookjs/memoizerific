@@ -24,11 +24,12 @@
     "url": "https://github.com/storybookjs/memoizerific/issues"
   },
   "type": "module",
-  "main": "memoizerific.js",
-  "module": "memoizerific.js",
+  "main": "dist/memoizerific.js",
+  "module": "dist/memoizerific.js",
   "scripts": {
     "test": "jest",
-    "lint": "prettier --check ."
+    "lint": "prettier --check .",
+    "build": "tsup --sourcemap && tsup --dts-only"
   },
   "prettier": {
     "printWidth": 100,
@@ -40,6 +41,7 @@
   "devDependencies": {
     "@types/jest": "^28.1.6",
     "prettier": "^2.7.1",
-    "ts-jest": "^28.0.7"
+    "ts-jest": "^28.0.7",
+    "tsup": "^6.2.2"
   }
 }
