@@ -1,6 +1,6 @@
-import {defineConfig} from "tsup";
+import { defineConfig } from 'tsup';
 
 export default defineConfig({
   entry: ['src/memoizerific.ts'],
-  format: 'esm'
+  format: 'esm',
 });
